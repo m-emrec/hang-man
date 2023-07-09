@@ -17,8 +17,10 @@ class AppTheme {
     ////
 
     ////        Widget Themes
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       color: AppColors.canvasColor,
+      foregroundColor: AppColors.buttonColor,
+      centerTitle: true,
     ),
 
     cardTheme: const CardTheme(
@@ -78,6 +80,8 @@ class AppColors {
   static const Color canvasColor = Color(0xFFFAF7F9);
   static const Color buttonColor = Color(0xFF52424D);
   static const Color cardColor = Color(0xFFFFF1D5);
+
+  static Color greenColor = Colors.green.shade900;
 
   // * Text Colors
   static const Color labelColor = Color(0xFFFFF1D5);

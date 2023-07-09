@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hang_man/Theme/theme.dart';
 import 'package:hang_man/Theme/theme_manager.dart';
+import 'package:hang_man/apis/random_word_api.dart';
+import 'package:hang_man/provider/game_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +26,13 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ThemeManager(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Game(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => WordProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

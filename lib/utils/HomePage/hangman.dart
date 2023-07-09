@@ -23,11 +23,13 @@ class _HangManState extends State<HangMan> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    /// controls the StickMan's animation.
     _manAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
 
+    /// controls the Rope's animation
     _ropeAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -57,6 +59,7 @@ class _HangManState extends State<HangMan> with TickerProviderStateMixin {
     final double h = context.mediaQuery.size.height;
     return Stack(
       children: [
+        /// Settings button.
         Positioned(
           right: 8,
           child: IconButton(
@@ -75,7 +78,6 @@ class _HangManState extends State<HangMan> with TickerProviderStateMixin {
           child: AnimatedContainer(
             width: w / 2,
             height: ropeAnimation.value,
-            // color: Colors.red,
             duration: _ropeAnimationController.duration!,
             child: Image.asset("rope".toPng),
           ),
@@ -86,7 +88,6 @@ class _HangManState extends State<HangMan> with TickerProviderStateMixin {
           top: (h - h / 2) / 2,
           left: (w - w) / 2,
           child: Container(
-            // color: Colors.red,
             child: Lottie.network(
               "https://assets1.lottiefiles.com/packages/lf20_yp8zf4am/man.json",
               controller: _manAnimationController,
