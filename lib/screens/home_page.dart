@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hang_man/Theme/theme.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/extensions/empty_padding_extension.dart';
+import 'package:hang_man/provider/screen.dart';
 import 'package:hang_man/screens/game_screen.dart';
 import 'package:hang_man/utils/HomePage/hangman.dart';
 import 'package:hang_man/utils/shared/myButton.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,8 +18,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double h = context.mediaQuery.size.height;
+    final double w = context.mediaQuery.size.width;
+    Provider.of<ScreenSize>(context).changeSize(w, h);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -40,7 +51,7 @@ class _HomePageState extends State<HomePage>
             MyButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => GamePage(),
+                  builder: (_) => const GamePage(),
                 ),
               ),
               child: Text(

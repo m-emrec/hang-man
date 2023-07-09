@@ -9,8 +9,10 @@ import '../../logger.dart';
 import 'char_card.dart';
 
 class Words extends StatefulWidget {
-  const Words({super.key});
-
+  const Words(
+      {super.key, required this.screenWidth, required this.screenHeight});
+  final double screenWidth;
+  final double screenHeight;
   @override
   State<Words> createState() => _WordsState();
 }
@@ -43,7 +45,7 @@ class _WordsState extends State<Words> {
     logger.i("Words");
     charIndex = 0;
     return SizedBox(
-      width: context.width,
+      width: widget.screenWidth,
       child: FutureBuilder(
         future: Provider.of<WordProvider>(context, listen: false).randomWord(),
         // initialData:
@@ -92,7 +94,7 @@ class _WordsState extends State<Words> {
                           vertical: 8.0, horizontal: 16),
                       child: SingleChildScrollView(
                         child: SizedBox(
-                          height: context.height * 0.1,
+                          height: widget.screenHeight * 0.1,
                           child: Text(value.def ?? ""),
                         ),
                       ),

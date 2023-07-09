@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/logger.dart';
+import 'package:hang_man/provider/screen.dart';
 import 'package:hang_man/utils/Game%20Screen/words.dart';
 import 'package:provider/provider.dart';
 
@@ -19,18 +20,21 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  late double w;
+  late double h;
   final PageController _controller = PageController();
   @override
   void initState() {
     super.initState();
-    // Provider.of<Game>(context, listen: false).resetBodyParts();
+    Provider.of<Game>(context, listen: false).resetBodyParts();
+    w = Provider.of<ScreenSize>(context, listen: false).screenWidth;
+    h = Provider.of<ScreenSize>(context, listen: false).screenHeight;
   }
 
   @override
   Widget build(BuildContext context) {
     logger.i("Game Screen");
-    final double w = 350; //context.width;
-    final double h = 900; //context.height;
+    logger.e("Sizes : $w  || $h");
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -54,28 +58,41 @@ class _GamePageState extends State<GamePage> {
               controller: _controller,
               onPageChanged: (value) async {},
               itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    //* Rope Centered
-                    Positioned(
-                      left: (w - (w / 2)) / 2,
-                      top: 0,
-                      child: Rope(
-                        screenHeight: context.height,
+                logger.d(w);
+                return SizedBox(
+                  height: 500,
+                  width: 500,
+                  child: Stack(
+                    fit: StackFit.passthrough,
+                    children: [
+                      //* Rope Centered
+                      Positioned(
+                        left: (w - (w / 2)) / 2,
+                        top: 0,
+                        child: Rope(
+                          screenHeight: h,
+                          screenWidth: w,
+                        ),
                       ),
-                    ),
-                    //* Stickman Parts
-                    Positioned(
-                      top: h * 0.2,
-                      left: (w - w / 2) / 2,
-                      child: const StickMan(),
-                    ),
-                    //* Words
-                    Positioned(
-                      top: h * 0.5,
-                      child: const Words(),
-                    ),
-                  ],
+                      //* Stickman Parts
+                      Positioned(
+                        top: h * 0.25,
+                        left: (w - w / 2) / 2,
+                        child: StickMan(
+                          screenHeight: h,
+                          screenWidth: w,
+                        ),
+                      ),
+                      //* Words
+                      Positioned(
+                        top: h * 0.5,
+                        child: Words(
+                          screenHeight: h,
+                          screenWidth: w,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

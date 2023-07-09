@@ -9,7 +9,12 @@ import 'draw_stick_man.dart';
 class StickMan extends StatefulWidget {
   const StickMan({
     super.key,
+    required this.screenWidth,
+    required this.screenHeight,
   });
+
+  final double screenWidth;
+  final double screenHeight;
 
   @override
   State<StickMan> createState() => _StickManState();
@@ -42,8 +47,9 @@ class _StickManState extends State<StickMan>
   @override
   Widget build(BuildContext context) {
     logger.i("Stick MAn");
-    final double w = context.width;
-    final double h = context.height;
+
+    final double w = widget.screenWidth;
+    final double h = widget.screenHeight;
     return SizedBox(
       // color: Colors.red,
       width: w / 2,
@@ -63,7 +69,7 @@ class _StickManState extends State<StickMan>
                 painter: DrawStickMan(
                   bodyParts: value.bodyParts.last,
                 ),
-                size: context.mediaQuery.size,
+                size: Size(w, h),
               ),
             ),
           );

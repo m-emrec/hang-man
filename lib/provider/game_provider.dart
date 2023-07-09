@@ -35,6 +35,6 @@ class Game extends ChangeNotifier {
     _bodyParts = [];
     // logger.i(bodyParts);
     _isDead = false;
-    // notifyListeners();
+    notifyListeners();
   }
 }
