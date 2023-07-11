@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hang_man/apis/random_word_api.dart';
-import 'package:hang_man/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../logger.dart';
@@ -55,10 +54,13 @@ class _WordsState extends State<Words> {
             builder: (context, value, child) {
               word = value.word;
 
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.done) {
                 // logger.e(snapshot.data);
                 // logger.e(snapshot.data);
+                if (snapshot.data == null) {
+                  return build(context);
+                }
+                logger.i("Word : $word");
                 return Column(
                   children: [
                     Wrap(

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hang_man/Theme/theme.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/extensions/empty_padding_extension.dart';
-import 'package:hang_man/provider/screen.dart';
+import 'package:hang_man/provider/screen_size.dart';
 import 'package:hang_man/screens/game_screen.dart';
 import 'package:hang_man/utils/HomePage/hangman.dart';
 import 'package:hang_man/utils/shared/myButton.dart';
 import 'package:provider/provider.dart';
+
+import '../provider/game_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,8 +21,8 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    Provider.of<Game>(context, listen: false).resetBodyParts();
   }
 
   @override

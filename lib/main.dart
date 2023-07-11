@@ -4,7 +4,7 @@ import 'package:hang_man/Theme/theme.dart';
 import 'package:hang_man/Theme/theme_manager.dart';
 import 'package:hang_man/apis/random_word_api.dart';
 import 'package:hang_man/provider/game_provider.dart';
-import 'package:hang_man/provider/screen.dart';
+import 'package:hang_man/provider/screen_size.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/logger.dart';
-import 'package:hang_man/provider/screen.dart';
+import 'package:hang_man/provider/screen_size.dart';
 import 'package:hang_man/utils/Game%20Screen/words.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +33,7 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    logger.i("Game Screen");
-    logger.e("Sizes : $w  || $h");
+    // logger.i("Game Screen");
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -58,7 +57,6 @@ class _GamePageState extends State<GamePage> {
               controller: _controller,
               onPageChanged: (value) async {},
               itemBuilder: (context, index) {
-                logger.d(w);
                 return SizedBox(
                   height: 500,
                   width: 500,
@@ -103,14 +101,14 @@ class _GamePageState extends State<GamePage> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     /// Pass Button
                     ElevatedButton(
                       style: context.theme.elevatedButtonTheme.style!.copyWith(
                         fixedSize: MaterialStatePropertyAll(
                           Size(
-                            w * 0.8,
+                            w * 0.4,
                             50,
                           ),
                         ),
@@ -119,6 +117,20 @@ class _GamePageState extends State<GamePage> {
                       onPressed: () => _controller.nextPage(
                           duration: const Duration(seconds: 1),
                           curve: Curves.bounceIn),
+                    ),
+
+                    /// Hint Button
+                    ElevatedButton(
+                      style: context.theme.elevatedButtonTheme.style!.copyWith(
+                        fixedSize: MaterialStatePropertyAll(
+                          Size(
+                            w * 0.4,
+                            50,
+                          ),
+                        ),
+                      ),
+                      child: const Text("Hint"),
+                      onPressed: () => {},
                     ),
                   ],
                 ),

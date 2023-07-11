@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hang_man/apis/random_word_api.dart';
 import 'package:hang_man/extensions/context_extension.dart';
+import 'package:hang_man/logger.dart';
+import 'package:hang_man/provider/game_provider.dart';
+import 'package:provider/provider.dart';
 
 class Score extends StatefulWidget {
   const Score({super.key});
@@ -28,12 +32,15 @@ class _ScoreState extends State<Score> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _controller,
-      child: Text(
-        "Score : 24",
-        style: context.textTheme.labelLarge!.copyWith(
-          fontSize: 16,
+    // logger.i("Skore : " + Provider.of<Game>(context).score.toString());
+    return Consumer<WordProvider>(
+      builder: (context, value, child) => FadeTransition(
+        opacity: _controller,
+        child: Text(
+          " ${value.score} ",
+          style: context.textTheme.labelLarge!.copyWith(
+            fontSize: 16,
+          ),
         ),
       ),
     );

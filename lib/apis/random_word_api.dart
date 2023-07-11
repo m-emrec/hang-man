@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hang_man/logger.dart';
+import 'package:hang_man/provider/game_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 /// https://api-ninjas.com/api/randomword
 ///
@@ -10,18 +12,21 @@ import 'package:http/http.dart' as http;
 ///
 ///
 ///
-class WordProvider extends ChangeNotifier {
+class WordProvider extends Game {
   String _word = "";
   String get word => _word;
   String? _def = "";
   String? get def => _def;
-
+  int _trueCount = 0;
+  int get trueCount => _trueCount;
   // ignore: constant_identifier_names
   static const _API_KEY = "3QiuXduPluL6XSoZaJ/LjA==wu6tKTBupAQ6KLxs";
 
   void reset() {
     _word = "";
     _def = "";
+    _trueCount = 0;
+    super.resetBodyParts();
   }
 
   /// Get a random word from the API.
@@ -64,12 +69,15 @@ class WordProvider extends ChangeNotifier {
     return null;
   }
 
-  bool checkChar(String char, int index) {
-    logger.i(index);
-
+  bool checkChar(BuildContext ctx, String char, int index) {
     /// if the [char] which the user wrote is correct , return true.
     if (_word[index].toLowerCase() == char.toLowerCase()) {
-      //TODO increase score here.
+      _trueCount++;
+      if (_trueCount == word.length) {
+        final int point = word.length * 2;
+        // Provider.of<Game>(ctx, listen: false).increaseScore(point);
+        super.increaseScore(point);
+      }
       return true;
     } else {
       return false;

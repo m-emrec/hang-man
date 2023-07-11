@@ -81,7 +81,7 @@ class _CharCardState extends State<CharCard>
             onSubmitted: (value) {
               setState(() {
                 _isTrue = Provider.of<WordProvider>(context, listen: false)
-                    .checkChar(value, widget.index);
+                    .checkChar(context, value, widget.index);
               });
 
               /// if the char is not true then call [addPart] func and clear the Card.

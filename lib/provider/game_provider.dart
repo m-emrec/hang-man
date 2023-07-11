@@ -10,6 +10,9 @@ class Game extends ChangeNotifier {
 
   bool get isDead => _isDead;
 
+  int _score = 0;
+  int get score => _score;
+
   /// Hang the Stick Man.
   hang() {
     _isDead = true;
@@ -27,14 +30,21 @@ class Game extends ChangeNotifier {
         hang();
       }
     } on RangeError catch (_) {}
-
     notifyListeners();
   }
 
   Future<void> resetBodyParts() async {
     _bodyParts = [];
-    // logger.i(bodyParts);
     _isDead = false;
+    _score = 0;
+    notifyListeners();
+  }
+
+  void increaseScore(int point) {
+    logger.d("İncrease Score");
+    logger.i("Before :  $_score");
+    _score += point;
+    logger.i("Then :  $_score");
     notifyListeners();
   }
 }
