@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:hang_man/Theme/theme.dart';
+import 'package:hang_man/apis/random_word_api.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/logger.dart';
 import 'package:hang_man/provider/screen_size.dart';
+import 'package:hang_man/screens/result_screen.dart';
 import 'package:hang_man/utils/Game%20Screen/words.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +29,11 @@ class _GamePageState extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<Game>(context, listen: false).resetBodyParts();
+
+    /// Reset the game data.
+    Provider.of<Game>(context, listen: false).reset();
+    Provider.of<WordProvider>(context, listen: false).reset(resScore: true);
+
     w = Provider.of<ScreenSize>(context, listen: false).screenWidth;
     h = Provider.of<ScreenSize>(context, listen: false).screenHeight;
   }
@@ -37,9 +44,21 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // TODO: Get this from provider.
         title: const Text("Word 1"),
         elevation: 0,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => const EndScreen(),
+              ),
+            ),
+            child: Text(
+              "End",
+              style: context.textTheme.labelLarge,
+            ),
+          )
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -100,39 +119,72 @@ class _GamePageState extends State<GamePage> {
               padding: const EdgeInsets.all(0.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    /// Pass Button
-                    ElevatedButton(
-                      style: context.theme.elevatedButtonTheme.style!.copyWith(
-                        fixedSize: MaterialStatePropertyAll(
-                          Size(
-                            w * 0.4,
-                            50,
+                child: Consumer<WordProvider>(
+                  builder: (context, value, child) {
+                    logger.i(value.word);
+                    if (value.trueCount == value.word.length &&
+                        value.word.isNotEmpty) {
+                      return ElevatedButton(
+                        style: context.theme.elevatedButtonTheme.style!
+                            .copyWith(
+                                fixedSize: MaterialStatePropertyAll(
+                                  Size(
+                                    w * 0.8,
+                                    50,
+                                  ),
+                                ),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    AppColors.greenColor)),
+                        onPressed: () {
+                          logger.i("Word : " + value.word);
+                          logger
+                              .i("true Count : " + value.trueCount.toString());
+                          _controller.nextPage(
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.bounceIn);
+                        },
+                        child: const Text("Continue"),
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        /// Pass Button
+                        ElevatedButton(
+                          style:
+                              context.theme.elevatedButtonTheme.style!.copyWith(
+                            fixedSize: MaterialStatePropertyAll(
+                              Size(
+                                w * 0.4,
+                                50,
+                              ),
+                            ),
                           ),
+                          child: const Text("Pass"),
+                          onPressed: () => _controller.nextPage(
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.bounceIn),
                         ),
-                      ),
-                      child: const Text("Pass"),
-                      onPressed: () => _controller.nextPage(
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.bounceIn),
-                    ),
 
-                    /// Hint Button
-                    ElevatedButton(
-                      style: context.theme.elevatedButtonTheme.style!.copyWith(
-                        fixedSize: MaterialStatePropertyAll(
-                          Size(
-                            w * 0.4,
-                            50,
+                        /// Hint Button
+                        ElevatedButton(
+                          style:
+                              context.theme.elevatedButtonTheme.style!.copyWith(
+                            fixedSize: MaterialStatePropertyAll(
+                              Size(
+                                w * 0.4,
+                                50,
+                              ),
+                            ),
                           ),
+                          child: const Text("Hint"),
+                          onPressed: () =>
+                              Provider.of<WordProvider>(context, listen: false)
+                                  .showHint(),
                         ),
-                      ),
-                      child: const Text("Hint"),
-                      onPressed: () => {},
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:hang_man/apis/random_word_api.dart';
 import 'package:hang_man/enums/stic_man_body_parts.dart';
 import 'package:hang_man/logger.dart';
 
@@ -12,6 +15,9 @@ class Game extends ChangeNotifier {
 
   int _score = 0;
   int get score => _score;
+  set score(int point) {
+    _score = point;
+  }
 
   /// Hang the Stick Man.
   hang() {
@@ -33,7 +39,7 @@ class Game extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> resetBodyParts() async {
+  reset() {
     _bodyParts = [];
     _isDead = false;
     _score = 0;
@@ -41,10 +47,14 @@ class Game extends ChangeNotifier {
   }
 
   void increaseScore(int point) {
-    logger.d("İncrease Score");
+    logger.d("İncrease Score   $point");
     logger.i("Before :  $_score");
     _score += point;
     logger.i("Then :  $_score");
+    notifyListeners();
+  }
+
+  void showHint() {
     notifyListeners();
   }
 }

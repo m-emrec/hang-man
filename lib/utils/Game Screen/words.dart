@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hang_man/apis/random_word_api.dart';
+import 'package:hang_man/provider/game_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../logger.dart';
@@ -18,6 +19,7 @@ class Words extends StatefulWidget {
 
 class _WordsState extends State<Words> {
   late String word;
+  late String def;
 
   List get getChars {
     List chars = [];
@@ -35,14 +37,11 @@ class _WordsState extends State<Words> {
     super.initState();
     // Provider.of<WordProvider>(context, listen: false).randomWord();
     Provider.of<WordProvider>(context, listen: false).reset();
-
-    visibleCharCount = Random().nextInt(3);
   }
 
   @override
   Widget build(BuildContext context) {
-    logger.i("Words");
-    charIndex = 0;
+    logger.i("Words Built");
     return SizedBox(
       width: widget.screenWidth,
       child: FutureBuilder(
@@ -50,63 +49,50 @@ class _WordsState extends State<Words> {
         // initialData:
         //     Provider.of<WordProvider>(context, listen: false).randomWord(),
         builder: (context, snapshot) {
-          return Consumer<WordProvider>(
-            builder: (context, value, child) {
-              word = value.word;
-
-              if (snapshot.connectionState == ConnectionState.done) {
-                // logger.e(snapshot.data);
-                // logger.e(snapshot.data);
-                if (snapshot.data == null) {
-                  return build(context);
-                }
-                logger.i("Word : $word");
-                return Column(
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data == null) {
+              return build(context);
+            }
+            charIndex = 0;
+            word = snapshot.data["word"];
+            def = snapshot.data["def"];
+            logger.i("Word : $word");
+            return Column(
+              children: [
+                Wrap(
+                  alignment: WrapAlignment.center,
                   children: [
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        ...getChars.map(
-                          (char) {
-                            //FIXME:
-                            charIndex++;
-                            visibleCharIndex =
-                                Random(charIndex).nextInt(getChars.length);
-                            if (charIndex - 1 == visibleCharIndex &&
-                                charIndex - 1 < visibleCharCount) {
-                              return CharCard(
-                                char: char,
-                                visible: true,
-                                index: charIndex - 1,
-                              );
-                            }
-                            return CharCard(
-                              char: char,
-                              visible: false,
-                              index: charIndex - 1,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                    ...getChars.map(
+                      (char) {
+                        charIndex++;
 
-                    /// Definition
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16),
-                      child: SingleChildScrollView(
-                        child: SizedBox(
-                          height: widget.screenHeight * 0.1,
-                          child: Text(value.def ?? ""),
-                        ),
-                      ),
+                        final ValueKey key = ValueKey(charIndex - 1);
+                        return CharCard(
+                          key: key,
+                          char: char,
+                          visible: false,
+                          index: charIndex - 1,
+                        );
+                      },
                     ),
                   ],
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          );
+                ),
+
+                /// Definition
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      height: widget.screenHeight * 0.1,
+                      child: Text(def),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    Provider.of<Game>(context, listen: false).resetBodyParts();
+    Provider.of<Game>(context, listen: false).reset();
   }
 
   @override

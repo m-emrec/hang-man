@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hang_man/logger.dart';
 import 'package:hang_man/provider/game_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 /// https://api-ninjas.com/api/randomword
 ///
@@ -19,14 +19,20 @@ class WordProvider extends Game {
   String? get def => _def;
   int _trueCount = 0;
   int get trueCount => _trueCount;
+
+  List<int> hintIndexList = [];
+
   // ignore: constant_identifier_names
   static const _API_KEY = "3QiuXduPluL6XSoZaJ/LjA==wu6tKTBupAQ6KLxs";
 
-  void reset() {
+  @override
+  reset({bool resScore = false}) {
     _word = "";
     _def = "";
     _trueCount = 0;
-    super.resetBodyParts();
+    resScore ? score = 0 : null;
+    hintIndexList.clear();
+    notifyListeners();
   }
 
   /// Get a random word from the API.
@@ -47,8 +53,12 @@ class WordProvider extends Game {
         // Some words have more than one definition that's why I split the definition.
         _def = _def!.split("2.")[0];
 
-        // notifyListeners();
-        return word;
+        final Map data = {
+          "word": word,
+          "def": def,
+        };
+        notifyListeners();
+        return data;
       }
     }
   }
@@ -69,18 +79,54 @@ class WordProvider extends Game {
     return null;
   }
 
+  void a() {
+    if (_trueCount == word.length) {
+      logger.e("message");
+      final int point = word.length * 2;
+      // Provider.of<Game>(ctx, listen: false).increaseScore(point);
+      increaseScore(point);
+    }
+  }
+
   bool checkChar(BuildContext ctx, String char, int index) {
     /// if the [char] which the user wrote is correct , return true.
     if (_word[index].toLowerCase() == char.toLowerCase()) {
       _trueCount++;
-      if (_trueCount == word.length) {
-        final int point = word.length * 2;
-        // Provider.of<Game>(ctx, listen: false).increaseScore(point);
-        super.increaseScore(point);
-      }
+      hintIndexList.add(index);
+      a();
       return true;
     } else {
       return false;
     }
+  }
+
+  @override
+  void showHint() {
+    logger.i("Show Hint called");
+
+    int hintIndex = Random().nextInt(word.length);
+
+    while (true) {
+      /// if [hintIndexList] contains the [hintIndex]
+      /// and the length of the list smaller than the word's length
+      /// continue the loop , until new index found.
+      if (hintIndexList.length < word.length) {
+        if (hintIndexList.contains(hintIndex)) {
+          hintIndex = Random().nextInt(word.length);
+        } else {
+          /// if the the [hintIndex] is new then break the loop
+          hintIndexList.add(hintIndex);
+          increaseScore(-2);
+          _trueCount++;
+          a();
+          notifyListeners();
+
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+    super.showHint();
   }
 }

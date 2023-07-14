@@ -35,7 +35,6 @@ class _CharCardState extends State<CharCard>
     super.initState();
 
     /// If the word is visible set [controller] text value
-    _controller.text = widget.visible! ? widget.char : "";
 
     /// Animation controller for FadeTransition.
     _animationController = AnimationController(
@@ -48,6 +47,7 @@ class _CharCardState extends State<CharCard>
 
   @override
   Widget build(BuildContext context) {
+    logger.i("Char card built");
     return FadeTransition(
       opacity: _animation,
       child: SizedBox(
@@ -62,33 +62,42 @@ class _CharCardState extends State<CharCard>
               : _isTrue!
                   ? AppColors.greenColor.withOpacity(0.5)
                   : Colors.red.shade900.withOpacity(0.5),
-          child: TextField(
-            /// if char is visible then set the TextField as readOnly
-            readOnly: widget.visible!,
-            controller: _controller,
-            style: context.textTheme.labelLarge,
-            maxLength: 1,
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
+          child: Consumer2<Game, WordProvider>(
+            builder: (context, game, word, child) {
+              return TextField(
+                /// if char is visible then set the TextField as readOnly
+                readOnly: _controller.text.isNotEmpty,
+                controller: _controller
+                  ..text = _isTrue != null && _isTrue!
+                      ? widget.char
+                      : word.hintIndexList.contains(widget.index)
+                          ? widget.char
+                          : "",
+                style: context.textTheme.labelLarge,
+                maxLength: 1,
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
 
-              /// just remove the maxLength text .
-              counterText: "",
-            ),
-            textAlignVertical: TextAlignVertical.bottom,
-            showCursor: false,
-            onSubmitted: (value) {
-              setState(() {
-                _isTrue = Provider.of<WordProvider>(context, listen: false)
-                    .checkChar(context, value, widget.index);
-              });
+                  /// just remove the maxLength text .
+                  counterText: "",
+                ),
+                textAlignVertical: TextAlignVertical.bottom,
+                showCursor: false,
+                onSubmitted: (value) {
+                  setState(() {
+                    _isTrue = Provider.of<WordProvider>(context, listen: false)
+                        .checkChar(context, value, widget.index);
+                  });
 
-              /// if the char is not true then call [addPart] func and clear the Card.
-              if (_isTrue == false) {
-                _controller.clear();
-                Provider.of<Game>(context, listen: false).addPart();
-              }
+                  /// if the char is not true then call [addPart] func and clear the Card.
+                  if (_isTrue == false) {
+                    _controller.clear();
+                    Provider.of<Game>(context, listen: false).addPart();
+                  }
+                },
+              );
             },
           ),
         ),

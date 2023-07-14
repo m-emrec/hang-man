@@ -35,7 +35,7 @@ class _StickManState extends State<StickMan>
       duration: const Duration(seconds: 2),
     );
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-    Provider.of<Game>(context, listen: false).resetBodyParts();
+    Provider.of<Game>(context, listen: false).reset();
   }
 
   @override
