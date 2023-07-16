@@ -22,7 +22,6 @@ class AppTheme {
       foregroundColor: AppColors.buttonColor,
       centerTitle: true,
     ),
-
     cardTheme: const CardTheme(
       color: AppColors.cardColor,
     ),
@@ -30,6 +29,10 @@ class AppTheme {
       endIndent: 32,
       indent: 32,
       thickness: 3,
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      circularTrackColor: AppColors.buttonColor,
+      color: AppColors.cardColor,
     ),
     ////
 
@@ -39,6 +42,7 @@ class AppTheme {
       labelLarge: AppTexts.labelLarge,
       titleLarge: AppTexts.titleLarge,
     ),
+
     ////
   );
 

@@ -2,17 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hang_man/apis/random_word_api.dart';
+import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/provider/game_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../Theme/theme.dart';
 import '../../logger.dart';
 import 'char_card.dart';
 
 class Words extends StatefulWidget {
   const Words(
-      {super.key, required this.screenWidth, required this.screenHeight});
+      {super.key,
+      required this.screenWidth,
+      required this.screenHeight,
+      required this.controller});
   final double screenWidth;
   final double screenHeight;
+  final PageController controller;
   @override
   State<Words> createState() => _WordsState();
 }
@@ -44,6 +50,7 @@ class _WordsState extends State<Words> {
     logger.i("Words Built");
     return SizedBox(
       width: widget.screenWidth,
+      height: widget.screenHeight * 0.3,
       child: FutureBuilder(
         future: Provider.of<WordProvider>(context, listen: false).randomWord(),
         // initialData:
@@ -87,6 +94,77 @@ class _WordsState extends State<Words> {
                       height: widget.screenHeight * 0.1,
                       child: Text(def),
                     ),
+                  ),
+                ),
+                const Spacer(),
+
+                ///  Buttons
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Consumer<WordProvider>(
+                    builder: (context, value, child) {
+                      logger.i(value.word);
+                      if (value.trueCount + value.hintCount ==
+                              value.word.length &&
+                          value.word.isNotEmpty) {
+                        return ElevatedButton(
+                          style: context.theme.elevatedButtonTheme.style!
+                              .copyWith(
+                                  fixedSize: MaterialStatePropertyAll(
+                                    Size(
+                                      widget.screenWidth * 0.8,
+                                      50,
+                                    ),
+                                  ),
+                                  backgroundColor: MaterialStatePropertyAll(
+                                      AppColors.greenColor)),
+                          onPressed: () {
+                            widget.controller.nextPage(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.bounceIn);
+                          },
+                          child: const Text("Continue"),
+                        );
+                      }
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          /// Pass Button
+                          ElevatedButton(
+                            style: context.theme.elevatedButtonTheme.style!
+                                .copyWith(
+                              fixedSize: MaterialStatePropertyAll(
+                                Size(
+                                  widget.screenWidth * 0.4,
+                                  50,
+                                ),
+                              ),
+                            ),
+                            child: const Text("Pass"),
+                            onPressed: () => widget.controller.nextPage(
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.bounceIn),
+                          ),
+
+                          /// Hint Button
+                          ElevatedButton(
+                            style: context.theme.elevatedButtonTheme.style!
+                                .copyWith(
+                              fixedSize: MaterialStatePropertyAll(
+                                Size(
+                                  widget.screenWidth * 0.4,
+                                  50,
+                                ),
+                              ),
+                            ),
+                            child: const Text("Hint"),
+                            onPressed: () => Provider.of<WordProvider>(context,
+                                    listen: false)
+                                .showHint(),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],

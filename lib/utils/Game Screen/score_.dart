@@ -37,7 +37,7 @@ class _ScoreState extends State<Score> with TickerProviderStateMixin {
       builder: (context, value, child) => FadeTransition(
         opacity: _controller,
         child: Text(
-          " ${value.score} ",
+          "Score : ${value.score} ",
           style: context.textTheme.labelLarge!.copyWith(
             fontSize: 16,
           ),

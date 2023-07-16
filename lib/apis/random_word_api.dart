@@ -19,6 +19,8 @@ class WordProvider extends Game {
   String? get def => _def;
   int _trueCount = 0;
   int get trueCount => _trueCount;
+  int _hintCount = 0;
+  int get hintCount => _hintCount;
 
   List<int> hintIndexList = [];
 
@@ -30,6 +32,7 @@ class WordProvider extends Game {
     _word = "";
     _def = "";
     _trueCount = 0;
+    _hintCount = 0;
     resScore ? score = 0 : null;
     hintIndexList.clear();
     notifyListeners();
@@ -80,9 +83,9 @@ class WordProvider extends Game {
   }
 
   void a() {
-    if (_trueCount == word.length) {
+    if (_trueCount + _hintCount == word.length) {
       logger.e("message");
-      final int point = word.length * 2;
+      final int point = trueCount * 2;
       // Provider.of<Game>(ctx, listen: false).increaseScore(point);
       increaseScore(point);
     }
@@ -116,8 +119,9 @@ class WordProvider extends Game {
         } else {
           /// if the the [hintIndex] is new then break the loop
           hintIndexList.add(hintIndex);
-          increaseScore(-2);
-          _trueCount++;
+          _hintCount++;
+          // increaseScore(-2);
+          // _trueCount++;
           a();
           notifyListeners();
 

@@ -4,6 +4,7 @@ import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/extensions/empty_padding_extension.dart';
 import 'package:hang_man/provider/screen_size.dart';
 import 'package:hang_man/screens/game_screen.dart';
+import 'package:hang_man/screens/result_screen.dart';
 import 'package:hang_man/utils/HomePage/hangman.dart';
 import 'package:hang_man/utils/shared/myButton.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,18 @@ class _HomePageState extends State<HomePage>
               ),
               child: Text(
                 "Start",
+                style: context.textTheme.labelMedium,
+              ),
+            ),
+            8.ph,
+            MyButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const EndScreen(),
+                ),
+              ),
+              child: Text(
+                "Score Table",
                 style: context.textTheme.labelMedium,
               ),
             ),

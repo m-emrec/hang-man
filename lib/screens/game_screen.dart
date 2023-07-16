@@ -5,6 +5,7 @@ import 'package:hang_man/Theme/theme.dart';
 import 'package:hang_man/apis/random_word_api.dart';
 import 'package:hang_man/extensions/context_extension.dart';
 import 'package:hang_man/logger.dart';
+import 'package:hang_man/provider/local_storage_provider.dart';
 import 'package:hang_man/provider/screen_size.dart';
 import 'package:hang_man/screens/result_screen.dart';
 import 'package:hang_man/utils/Game%20Screen/words.dart';
@@ -44,15 +45,17 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text("Word 1"),
         elevation: 0,
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => const EndScreen(),
-              ),
-            ),
+            onPressed: () => Provider.of<LocalStorage>(context, listen: false)
+                .saveScore(
+                    Provider.of<WordProvider>(context, listen: false).score)
+                .then((value) => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => const EndScreen(),
+                      ),
+                    )),
             child: Text(
               "End",
               style: context.textTheme.labelLarge,
@@ -74,13 +77,11 @@ class _GamePageState extends State<GamePage> {
             PageView.builder(
               physics: const NeverScrollableScrollPhysics(),
               controller: _controller,
-              onPageChanged: (value) async {},
               itemBuilder: (context, index) {
                 return SizedBox(
-                  height: 500,
-                  width: 500,
+                  height: h,
+                  width: w,
                   child: Stack(
-                    fit: StackFit.passthrough,
                     children: [
                       //* Rope Centered
                       Positioned(
@@ -106,6 +107,7 @@ class _GamePageState extends State<GamePage> {
                         child: Words(
                           screenHeight: h,
                           screenWidth: w,
+                          controller: _controller,
                         ),
                       ),
                     ],
@@ -114,80 +116,80 @@ class _GamePageState extends State<GamePage> {
               },
             ),
 
-            /// Pass Button
-            Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Consumer<WordProvider>(
-                  builder: (context, value, child) {
-                    logger.i(value.word);
-                    if (value.trueCount == value.word.length &&
-                        value.word.isNotEmpty) {
-                      return ElevatedButton(
-                        style: context.theme.elevatedButtonTheme.style!
-                            .copyWith(
-                                fixedSize: MaterialStatePropertyAll(
-                                  Size(
-                                    w * 0.8,
-                                    50,
-                                  ),
-                                ),
-                                backgroundColor: MaterialStatePropertyAll(
-                                    AppColors.greenColor)),
-                        onPressed: () {
-                          logger.i("Word : " + value.word);
-                          logger
-                              .i("true Count : " + value.trueCount.toString());
-                          _controller.nextPage(
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.bounceIn);
-                        },
-                        child: const Text("Continue"),
-                      );
-                    }
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        /// Pass Button
-                        ElevatedButton(
-                          style:
-                              context.theme.elevatedButtonTheme.style!.copyWith(
-                            fixedSize: MaterialStatePropertyAll(
-                              Size(
-                                w * 0.4,
-                                50,
-                              ),
-                            ),
-                          ),
-                          child: const Text("Pass"),
-                          onPressed: () => _controller.nextPage(
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.bounceIn),
-                        ),
+            // /// Pass Button
+            // Padding(
+            //   padding: const EdgeInsets.all(0.0),
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: Consumer<WordProvider>(
+            //       builder: (context, value, child) {
+            //         logger.i(value.word);
+            //         if (value.trueCount == value.word.length &&
+            //             value.word.isNotEmpty) {
+            //           return ElevatedButton(
+            //             style: context.theme.elevatedButtonTheme.style!
+            //                 .copyWith(
+            //                     fixedSize: MaterialStatePropertyAll(
+            //                       Size(
+            //                         w * 0.8,
+            //                         50,
+            //                       ),
+            //                     ),
+            //                     backgroundColor: MaterialStatePropertyAll(
+            //                         AppColors.greenColor)),
+            //             onPressed: () {
+            //               logger.i("Word : " + value.word);
+            //               logger
+            //                   .i("true Count : " + value.trueCount.toString());
+            //               _controller.nextPage(
+            //                   duration: const Duration(seconds: 1),
+            //                   curve: Curves.bounceIn);
+            //             },
+            //             child: const Text("Continue"),
+            //           );
+            //         }
+            //         return Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //           children: [
+            //             /// Pass Button
+            //             ElevatedButton(
+            //               style:
+            //                   context.theme.elevatedButtonTheme.style!.copyWith(
+            //                 fixedSize: MaterialStatePropertyAll(
+            //                   Size(
+            //                     w * 0.4,
+            //                     50,
+            //                   ),
+            //                 ),
+            //               ),
+            //               child: const Text("Pass"),
+            //               onPressed: () => _controller.nextPage(
+            //                   duration: const Duration(seconds: 1),
+            //                   curve: Curves.bounceIn),
+            //             ),
 
-                        /// Hint Button
-                        ElevatedButton(
-                          style:
-                              context.theme.elevatedButtonTheme.style!.copyWith(
-                            fixedSize: MaterialStatePropertyAll(
-                              Size(
-                                w * 0.4,
-                                50,
-                              ),
-                            ),
-                          ),
-                          child: const Text("Hint"),
-                          onPressed: () =>
-                              Provider.of<WordProvider>(context, listen: false)
-                                  .showHint(),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+            //             /// Hint Button
+            //             ElevatedButton(
+            //               style:
+            //                   context.theme.elevatedButtonTheme.style!.copyWith(
+            //                 fixedSize: MaterialStatePropertyAll(
+            //                   Size(
+            //                     w * 0.4,
+            //                     50,
+            //                   ),
+            //                 ),
+            //               ),
+            //               child: const Text("Hint"),
+            //               onPressed: () =>
+            //                   Provider.of<WordProvider>(context, listen: false)
+            //                       .showHint(),
+            //             ),
+            //           ],
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
