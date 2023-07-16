@@ -6,6 +6,9 @@ import 'package:hang_man/provider/game_provider.dart';
 import 'package:hang_man/screens/result_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../apis/random_word_api.dart';
+import '../../provider/local_storage_provider.dart';
+
 class Rope extends StatefulWidget {
   const Rope(
       {super.key, required this.screenHeight, required this.screenWidth});
@@ -59,6 +62,8 @@ class _RopeState extends State<Rope> with TickerProviderStateMixin {
   void _statusListener(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
       logger.i("message");
+      Provider.of<LocalStorage>(context, listen: false)
+          .saveScore(Provider.of<WordProvider>(context, listen: false).score);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => const EndScreen(),

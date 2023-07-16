@@ -34,9 +34,9 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Hangman",
-          style: TextStyle(color: AppColors.buttonColor),
+          style: TextStyle(color: context.textTheme.titleLarge!.color),
         ),
         centerTitle: true,
       ),

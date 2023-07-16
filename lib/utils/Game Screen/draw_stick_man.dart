@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hang_man/enums/stic_man_body_parts.dart';
+import 'package:hang_man/extensions/context_extension.dart';
 
 class DrawStickMan extends CustomPainter {
   final StickmanBodyParts bodyParts;
+  final BuildContext context;
 
-  DrawStickMan({
+  DrawStickMan(
+    this.context, {
     required this.bodyParts,
   });
 
-  final Paint _paint = Paint()
-    ..color = Colors.black
-    ..strokeWidth = 4;
-
+  late Paint _paint;
   void drawHead(Canvas canvas, Size size, Offset headDistance) {
     double headSize = 30;
     double eyeSize = 3;
@@ -117,6 +117,12 @@ class DrawStickMan extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    _paint = Paint()
+      ..color = context.theme.brightness == Brightness.light
+          ? Colors.black
+          : Colors.white70
+      ..strokeWidth = 4;
+
     Offset headDistance = Offset(size.width * 0.5, size.height * 0.12);
 
     switch (bodyParts) {

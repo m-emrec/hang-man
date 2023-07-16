@@ -14,8 +14,6 @@ class ThemeSwitch extends StatefulWidget {
 }
 
 class _ThemeSwitchState extends State<ThemeSwitch> {
-  /// TODO: This will get the value from RiverPod
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeManager>(builder: (context, value, child) {
@@ -23,14 +21,14 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
 
       return FlutterSwitch(
         value: isLight,
-        activeIcon:
-            const Icon(Icons.light_mode_outlined, color: AppColors.canvasColor),
-        inactiveIcon:
-            const Icon(Icons.dark_mode_outlined, color: AppColors.canvasColor),
-        activeColor: AppColors.buttonColor.withOpacity(0.5),
-        inactiveColor: Colors.grey.shade900,
-        inactiveToggleColor: Colors.grey.shade700,
-        activeToggleColor: AppColors.buttonColor.withOpacity(0.6),
+        activeIcon: const Icon(Icons.light_mode_outlined,
+            color: AppColorsLight.canvasColor),
+        inactiveIcon: const Icon(Icons.dark_mode_outlined,
+            color: AppColorsLight.canvasColor),
+        activeColor: AppColorsLight.buttonColor.withOpacity(0.5),
+        inactiveColor: Colors.grey.shade800,
+        inactiveToggleColor: Colors.grey.shade600,
+        activeToggleColor: AppColorsLight.buttonColor.withOpacity(0.6),
         onToggle: (val) => setState(() {
           isLight = !isLight;
           value.changeTheme();

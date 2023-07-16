@@ -117,11 +117,11 @@ class _WordsState extends State<Words> {
                                     ),
                                   ),
                                   backgroundColor: MaterialStatePropertyAll(
-                                      AppColors.greenColor)),
+                                      AppColorsLight.greenColor)),
                           onPressed: () {
                             widget.controller.nextPage(
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.bounceIn);
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.decelerate);
                           },
                           child: const Text("Continue"),
                         );
@@ -142,8 +142,8 @@ class _WordsState extends State<Words> {
                             ),
                             child: const Text("Pass"),
                             onPressed: () => widget.controller.nextPage(
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.bounceIn),
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.decelerate),
                           ),
 
                           /// Hint Button

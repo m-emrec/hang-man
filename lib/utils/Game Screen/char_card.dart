@@ -60,7 +60,7 @@ class _CharCardState extends State<CharCard>
           color: _isTrue == null
               ? Theme.of(context).cardColor
               : _isTrue!
-                  ? AppColors.greenColor.withOpacity(0.5)
+                  ? AppColorsLight.greenColor.withOpacity(0.5)
                   : Colors.red.shade900.withOpacity(0.5),
           child: Consumer2<Game, WordProvider>(
             builder: (context, game, word, child) {

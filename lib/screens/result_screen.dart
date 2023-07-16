@@ -38,8 +38,14 @@ class EndScreen extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Card(
                               child: ListTile(
-                                title: Text(date),
-                                trailing: Text(score),
+                                title: Text(
+                                  date,
+                                  style: context.textTheme.labelLarge,
+                                ),
+                                trailing: Text(
+                                  score,
+                                  style: context.textTheme.labelLarge,
+                                ),
                               ),
                             ),
                           );

@@ -70,7 +70,7 @@ class AndroidBottomMenu extends BottomMenu {
       ),
       showDragHandle: true,
       enableDrag: false,
-      backgroundColor: AppColors.canvasColor,
+      backgroundColor: AppColorsLight.canvasColor,
       onClosing: () {
         logger.i("message");
       },
@@ -107,13 +107,12 @@ class BottomMenuBody extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Text("Change Theme").labelLarge(context),
-                ThemeSwitch(),
+                const Text("Theme").labelLarge(context),
+                const ThemeSwitch(),
               ],
             ),
 
             /// Text Size
-            const Slider.adaptive(value: 0, onChanged: null),
           ],
         ),
       ),

@@ -22,26 +22,13 @@ class StickMan extends StatefulWidget {
 
 class _StickManState extends State<StickMan>
     with SingleTickerProviderStateMixin {
-  final List<FadeTransition> _bodyPart = [];
-
-  late final Animation<double> _animation;
-  late final AnimationController _controller;
+  final List _bodyPart = [];
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
-    Provider.of<Game>(context, listen: false).reset();
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
+    Provider.of<Game>(context, listen: false).reset();
   }
 
   @override
@@ -56,25 +43,22 @@ class _StickManState extends State<StickMan>
       height: h * 0.35,
       child: Consumer<Game>(
         builder: (context, value, child) {
-          //FIXME:
-          _controller.reset();
-          _controller.forward();
           if (value.bodyParts.isEmpty) {
             return const SizedBox();
           }
           _bodyPart.add(
-            FadeTransition(
-              opacity: _animation,
-              child: CustomPaint(
-                painter: DrawStickMan(
-                  bodyParts: value.bodyParts.last,
-                ),
-                size: Size(w, h),
+            CustomPaint(
+              painter: DrawStickMan(
+                context,
+                bodyParts: value.bodyParts.last,
               ),
+              size: Size(w, h),
             ),
           );
           return Stack(
-            children: [..._bodyPart.map((e) => e)],
+            children: [
+              ..._bodyPart.map((e) => e),
+            ],
           );
         },
       ),
