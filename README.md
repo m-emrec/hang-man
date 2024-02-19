@@ -29,8 +29,7 @@ The rules are simple:
 - Provider
 
 ## Video
-<iframe width="966" height="604" src="https://www.youtube.com/embed/GYCiS8sLE4k" title="Hang Man Game" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
+[![Hang-man video](https://img.youtube.com/vi/GYCiS8sLE4k/0.jpg)](https://www.youtube.com/watch?v=GYCiS8sLE4k)
 ## Getting Started
 
 To get started with Hang-Man, follow these steps:
