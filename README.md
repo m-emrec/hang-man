@@ -1,16 +1,52 @@
-# hang_man
+# Hang-Man
+Welcome to the classic word-guessing challenge – the Hangman Game! Whether you're a wordsmith looking to test your vocabulary or just seeking a fun way to pass the time, this game is sure to entertain and challenge you.
+The rules are simple:
+1. A secret word is chosen, and your goal is to guess the word letter by letter.
+2. Each incorrect guess results in the drawing of a part of the hangman.
+3. You win by guessing the word before the hangman is fully drawn, but be careful – too many incorrect guesses, and the game is over!
 
-A new Flutter project.
+
+## Features
+#### Responsive Design
+- Enjoy a seamless gaming experience on a variety of devices with our responsive design, ensuring that the Hangman game adapts to different screen sizes.
+
+#### Random Word Selection
+- Experience endless variety with a random word selection powered by an API.
+
+#### User-Friendly Interface
+- Navigate through the game effortlessly with an intuitive and user-friendly interface.
+#### Dark Theme
+- Enhance your gaming experience with a stylish dark theme.
+
+## Technologies Used
+
+### Language
+
+- Flutter
+
+### State Management
+
+- Provider
+
+## Video
+<iframe width="966" height="604" src="https://www.youtube.com/embed/GYCiS8sLE4k" title="Hang Man Game" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with Hang-Man, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+### 1-Clone the repository:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+git clone https://github.com/memrec45/hang-man.git
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2-Navigate to the project directory:
+
+cd hang-man
+
+### 3-Install dependencies:
+
+flutter pub get
+
+### 4-Run the app:
+
+flutter run
