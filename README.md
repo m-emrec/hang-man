@@ -36,7 +36,7 @@ To get started with Hang-Man, follow these steps:
 
 ### 1-Clone the repository:
 
-git clone https://github.com/memrec45/hang-man.git
+git clone https://github.com/m-emrec/hang-man.git
 
 ### 2-Navigate to the project directory:
 
